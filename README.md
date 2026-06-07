@@ -157,5 +157,3 @@ cmake --build .
 ./CVEdgeShapeDetectorApp
 
 ```
-
-```
