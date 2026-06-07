@@ -28,26 +28,37 @@ The application isolates intensive matrix operations and mathematical optimizati
 
 ```
 
-###  Core Algorithmic Capabilities
+## Core Algorithmic Capabilities
 
-* **5-Step Canny Edge Detection Subsystem:** A rigorous implementation of edge thinning and tracking from first principles:
-* *Gaussian Noise Attenuation:* 2D convolution masking to remove high-frequency noise.
-* *Sobel Gradient Vectorization:* Computes local directional spatial derivatives ($I_x, I_y$), magnitude, and quantized orientation angles.
-* *Non-Maximum Suppression:* Edge thinning by isolating local maxima along gradient directions.
-* *Hysteresis Thresholding:* Dual-thresholding arrays to isolate strong, weak, and non-edge pixels.
-* *Edge Tracking:* Recursive topological analysis to preserve weak edges physically connected to valid structures.
+---
 
+### 1. 5-Step Canny Edge Detection Subsystem
+A rigorous implementation of edge thinning and feature tracking engineered from first principles:
 
-* **Parameterized Hough Transform Engines:** Maps spatial edge tokens into multi-dimensional accumulator spaces to isolate geometric shapes despite partial occlusions:
-* *Hough Line Detector:* Leverages the normal parameterization ($\rho = x\cos\theta + y\sin\theta$) to vote on linear structures.
-* *Hough Circle Detector:* Maps pixels to a 3-dimensional Hough space $(x, y, r)$ using gradient direction optimization to restrict vote allocation vectors.
-* *Hough Ellipse Detector:* Solves multi-dimensional constraints to segment complex elliptical orientations from binary edge inputs.
+* **Gaussian Noise Attenuation:** deploys dynamic 2D convolution masking to smooth high-frequency image noise.
+* **Sobel Gradient Vectorization:** computes local directional spatial derivatives ($I_x, I_y$), tracking absolute magnitude and quantized orientation angles.
+* **Non-Maximum Suppression (NMS):** enforces precise edge thinning by isolating local intensity maxima along calculated gradient vectors.
+* **Hysteresis Thresholding:** maps dual-thresholding boundaries to segment strong, weak, and non-edge candidate pixels.
+* **Edge Tracking Framework:** executes recursive topological analysis to preserve valid weak edges physically connected to anchored structures.
 
+---
 
-* **Deformable Active Contours (Snakes):** Implements an iterative optimization spline that deforms over temporal steps to capture object boundaries by minimizing a comprehensive Lagrangian energy functional:
+### 2. Parameterized Hough Transform Engines
+Maps distinct spatial edge tokens into multi-dimensional accumulator parameter spaces to isolate geometric shapes despite partial occlusions or noise:
+
+* **Hough Line Detector:** leverages the normal parametric representation ($\rho = x\cos\theta + y\sin\theta$) to vote on linear alignment vectors.
+* **Hough Circle Detector:** maps edge pixels into a 3-dimensional Hough accumulator space $(x, y, r)$, utilizing localized gradient direction optimization to restrict vote scatter.
+* **Hough Ellipse Detector:** solves multi-dimensional geometric constraints to accurately segment complex elliptical orientations from binary inputs.
+
+---
+
+### 3. Deformable Active Contours (Snakes)
+Implements an iterative optimization spline that deforms over continuous temporal steps to lock onto target object boundaries by minimizing a comprehensive Lagrangian energy functional:
 
 $$E_{\text{total}} = \int \left( \alpha E_{\text{continuity}} + \beta E_{\text{curvature}} + \gamma E_{\text{image}} \right) ds$$
 
+* **Internal Forces:** balances elasticity ($\alpha$) to enforce point continuity alongside stiffness ($\beta$) to regulate spline smoothness.
+* **External Forces:** processes localized image intensity gradients and edge distance maps ($\gamma$) to pull the snake configuration precisely into irregular object silhouettes.
 
 
 The framework balances internal elastic forces (continuity and smoothness) against localized image external forces (gradients and edge distance maps) to snap precisely onto irregular silhouettes.
