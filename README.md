@@ -28,7 +28,7 @@ The application isolates intensive matrix operations and mathematical optimizati
 
 ```
 
-### 1. Core Algorithmic Capabilities
+###  Core Algorithmic Capabilities
 
 * **5-Step Canny Edge Detection Subsystem:** A rigorous implementation of edge thinning and tracking from first principles:
 * *Gaussian Noise Attenuation:* 2D convolution masking to remove high-frequency noise.
