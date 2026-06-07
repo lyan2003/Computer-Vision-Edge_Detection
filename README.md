@@ -60,22 +60,28 @@ The framework balances internal elastic forces (continuity and smoothness) again
 
 Simultaneous detection and parametric overlay of linear and circular primitives within a unified scene graph.
 
+<img width="1502" height="1038" alt="image" src="https://github.com/user-attachments/assets/85c3eca5-1477-42ed-8d34-1e1068616824" />
+
 
 ### 2. Hough Transform: Circular Primitive Extraction
 
 Robust isolation of circular structures leveraging optimized gradient-directed accumulator arrays.
 
+<img width="1502" height="913" alt="image" src="https://github.com/user-attachments/assets/7752661c-e621-4554-86a9-8f98df949b91" />
 
 ### 3. Hough Transform: Elliptical Geometry Extraction
 
 Segmenting elliptical silhouettes by computing localized spatial constraints in parameter space.
 
+<img width="1502" height="1038" alt="image" src="https://github.com/user-attachments/assets/2e21b31b-3776-41a5-ba68-5f0c87c65e33" />
 
 ### 4. Active Contours (Snakes) Boundary Tracking
 
 Visualizing the step-by-step deformation loop as the initialized spline minimizes its energy fields to snap onto target contours.
 
+<img width="1502" height="913" alt="image" src="https://github.com/user-attachments/assets/6058c04a-729f-40ea-a121-1434eef76928" />
 
+<img width="1502" height="913" alt="image" src="https://github.com/user-attachments/assets/02eb24a0-ba00-4cd3-8f5d-b07c26142654" />
 
 ---
 
@@ -150,7 +156,6 @@ cmake --build .
 ```bash
 ./CVEdgeShapeDetectorApp
 
-```
 ```
 
 ```
