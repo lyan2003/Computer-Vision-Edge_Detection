@@ -1,68 +1,156 @@
-# 👁️ Computer Vision: Edge & Shape Detection Pipeline (C++ / Qt)
+# Computer Vision Edge, Shape Detection, and Active Contours Pipeline
 
-## 📌 Project Overview
-A comprehensive desktop application developed in **C++** using the **Qt Framework**. This project implements core Computer Vision algorithms from scratch, focusing on edge detection, geometric shape recognition, and contour tracking through mathematical energy minimization.
-
-## ⚙️ Core Algorithms Implemented
-
-### 1. Canny Edge Detector
-Implemented the complete 5-step Canny edge detection pipeline from scratch:
-* Gaussian Blur for noise reduction.
-* Sobel Gradients (Magnitude & Angle computation).
-* Non-Maximum Suppression (Edge thinning).
-* Double Thresholding.
-* Edge Tracking by Hysteresis.
-
-### 2. Hough Transform (Shape Detection)
-* **Hough Circles:** Utilizes a highly optimized accumulator to detect circular shapes.
-* **Hough Ellipses & Lines:** Extracts generalized geometric shapes from binary edge maps by mapping pixels to parameter space.
-
-### 3. Active Contours (Snakes)
-Implemented an iterative energy-minimizing spline model for contour tracking and image segmentation. The contour actively snaps to object boundaries by minimizing the total energy:
-$$E_{total} = \alpha E_{cont} + \beta E_{curv} + \gamma E_{img}$$
-Where $E_{cont}$ enforces continuity, $E_{curv}$ enforces smoothness, and $E_{img}$ pulls the snake toward image edges (computed via Gaussian blurring and Canny edge distance transforms).
+A high-performance, native C++ desktop application engineered using the Qt framework to implement, benchmark, and visualize advanced low-level computer vision algorithms from mathematical primitives. This project features a completely custom 5-step Canny Edge Detection engine, parameterized Hough Transform modules for geometric primitive extraction (Lines, Circles, and Ellipses), and an iterative energy-minimizing Active Contour (Snakes) spline framework for deformable segmentation and object boundary tracking.
 
 ---
 
-## 📸 Application Output Gallery
+## Technical Pipeline Architecture
+
+The application isolates intensive matrix operations and mathematical optimization loops from the Qt graphical rendering thread, maintaining smooth visual feedback during multi-parameter space iterations.
+
+```text
++-------------------------------------------------------------------------+
+|                                QT GUI LAYER                             |
+|          (Dynamic Parameter Sliders, Canvas Renderers, Iteration Logs)  |
++-------------------------------------------------------------------------+
+                                    |
+                                    v
++-------------------------------------------------------------------------+
+|                     ALGORITHMIC CORE PIPELINE (C++)                     |
+|  [Canny Engine]  -->  [Hough Parametric Spaces]  -->  [Active Contours] |
++-------------------------------------------------------------------------+
+                                    |
+                                    v
++-------------------------------------------------------------------------+
+|                       MATHEMATICAL OPTIMIZATION                         |
+|    (Accumulator Arrays, Dynamic Energy Splines, Distance Transforms)    |
++-------------------------------------------------------------------------+
+
+```
+
+### 1. Core Algorithmic Capabilities
+
+* **5-Step Canny Edge Detection Subsystem:** A rigorous implementation of edge thinning and tracking from first principles:
+* *Gaussian Noise Attenuation:* 2D convolution masking to remove high-frequency noise.
+* *Sobel Gradient Vectorization:* Computes local directional spatial derivatives ($I_x, I_y$), magnitude, and quantized orientation angles.
+* *Non-Maximum Suppression:* Edge thinning by isolating local maxima along gradient directions.
+* *Hysteresis Thresholding:* Dual-thresholding arrays to isolate strong, weak, and non-edge pixels.
+* *Edge Tracking:* Recursive topological analysis to preserve weak edges physically connected to valid structures.
+
+
+* **Parameterized Hough Transform Engines:** Maps spatial edge tokens into multi-dimensional accumulator spaces to isolate geometric shapes despite partial occlusions:
+* *Hough Line Detector:* Leverages the normal parameterization ($\rho = x\cos\theta + y\sin\theta$) to vote on linear structures.
+* *Hough Circle Detector:* Maps pixels to a 3-dimensional Hough space $(x, y, r)$ using gradient direction optimization to restrict vote allocation vectors.
+* *Hough Ellipse Detector:* Solves multi-dimensional constraints to segment complex elliptical orientations from binary edge inputs.
+
+
+* **Deformable Active Contours (Snakes):** Implements an iterative optimization spline that deforms over temporal steps to capture object boundaries by minimizing a comprehensive Lagrangian energy functional:
+
+$$E_{\text{total}} = \int \left( \alpha E_{\text{continuity}} + \beta E_{\text{curvature}} + \gamma E_{\text{image}} \right) ds$$
+
+
+
+The framework balances internal elastic forces (continuity and smoothness) against localized image external forces (gradients and edge distance maps) to snap precisely onto irregular silhouettes.
+
+---
+
+## Application Output Gallery
 
 ### 1. Hough Transform: Multi-Shape Detection (Lines & Circles)
-Simultaneous detection and overlay of multiple geometric primitives.
 
-![Line and Circle Detection](assets/line_and_circle_detection.jpeg)
+Simultaneous detection and parametric overlay of linear and circular primitives within a unified scene graph.
 
-### 2. Hough Transform: Circle Detection
-Robust detection of circular shapes using a custom accumulator.
 
-![Circle Detection](assets/circle_detection.jpeg)
+### 2. Hough Transform: Circular Primitive Extraction
 
-### 3. Hough Transform: Ellipse Detection
-Extracting elliptical structures by mapping pixels to the required parameter space.
+Robust isolation of circular structures leveraging optimized gradient-directed accumulator arrays.
 
-![Ellipse Detection](assets/ellipse_detection.jpeg)
 
-### 4. Active Contours (Snakes) Tracking
-Visualizing the iterative process of the contour snapping to the object's boundaries by minimizing energy functions.
+### 3. Hough Transform: Elliptical Geometry Extraction
 
-![Active Contour Initialization](assets/Active_contour.jpeg)
-![Active Contour Convergence](assets/Active_contour2.jpeg)
+Segmenting elliptical silhouettes by computing localized spatial constraints in parameter space.
+
+
+### 4. Active Contours (Snakes) Boundary Tracking
+
+Visualizing the step-by-step deformation loop as the initialized spline minimizes its energy fields to snap onto target contours.
+
+
 
 ---
 
-## 🛠️ Tech Stack & Architecture
-* **Language:** C++ (Object-Oriented Design)
-* **GUI Framework:** Qt (Widgets / UI Designer)
-* **Build System:** CMake
-* **Libraries:** OpenCV (Used strictly for matrix operations `cv::Mat` and basic rendering, while core algorithms are implemented from scratch).
+## Key Engineering Standards Applied
 
-## 🚀 Build & Run Instructions
+* **First-Principles Algorithm Synthesis:** Core analytical engines (Canny, Hough spaces, Spline optimization) are engineered natively without relying on high-level opencv function wrappers, preserving `cv::Mat` strictly as an efficient pixel storage matrix.
+* **Accumulator Array Optimization:** Memory footprints for high-dimensional Hough spaces are structurally managed to ensure low allocation latencies and highly localized cache-line search passes.
+* **Numerical Spline Stability:** The Active Contour optimizer handles matrix inversion constraints deterministically, ensuring stable step transformations without risking geometric convergence collapse.
+* **Modern C++ Compliance:** Built entirely using C++17 paradigms, incorporating strong type safety, strict pointer boundaries, and efficient structure passing to maintain real-time usability profiles.
+
+---
+
+## Repository Directory Tree
+
+```text
+project6-cv-edge-shape-detection/
+├── CMakeLists.txt                 # Master build configuration and linkage rules
+├── activecontour.cpp              # Spline initialization, internal/external energy loops
+├── activecontour.h                # Parameter matrices and contour step optimization declarations
+├── cannyedgedetector.cpp          # Gaussian blur, Sobel gradients, NMS, and hysteresis tracking
+├── cannyedgedetector.h            # Edge tracking maps and kernel parameter declarations
+├── houghcircledetector.cpp        # 3D accumulator voting loops for radial geometries
+├── houghcircledetector.h          # Circle parameter mapping and local maxima classes
+├── houghellipsedetector.cpp       # Multi-dimensional parameter mapping for complex curves
+├── houghellipsedetector.h         # Ellipse scoring functions and spatial configurations
+├── houghlinedetector.cpp          # Normal-plane accumulator mapping for linear extraction
+├── houghlinedetector.h            # Theta-rho parameter space configuration definitions
+├── main.cpp                       # Master Qt application setup entrypoint
+├── mainwindow.cpp                 # Slot routing, slider transformations, canvas renders
+├── mainwindow.h                   # GUI state trackers, timer slots, and image matrices
+├── mainwindow.ui                  # Qt Designer layout blueprints for user interaction
+└── assets/                        # Output gallery assets (Active_contour.jpeg, circle_detection.jpeg, etc.)
+
+```
+
+---
+
+## Toolchain Setup and Deployment
 
 ### Prerequisites
-* CMake (Version 3.16 or higher)
-* Qt5 or Qt6 libraries
-* C++17 Compiler
 
-### Steps
-1. Clone the repository:
-   ```bash
-   git clone [https://github.com/YourUsername/CV-Edge-Shape-Detection.git](https://github.com/YourUsername/CV-Edge-Shape-Detection.git)
+* Build System: CMake (Version 3.16 or higher).
+* Core UI Packages: Qt Creator / Qt5 or Qt6 development environments.
+* Dependency Matrix: OpenCV Development Libraries (For matrix structures and basic file I/O).
+* Compiler Profile: Modern C++17 capable compiler (GCC, Clang, or MSVC).
+
+### Build Pipeline
+
+1. Clone the project tree structure along with its localized submodules:
+```bash
+git clone git@github.com:lyan2003/Modern-CPP-Computer-Vision-Edge-Shape-Detection.git
+
+```
+
+
+2. Move into the project workspace and initialize CMake parameters:
+```bash
+mkdir build && cd build
+cmake ..
+
+```
+
+
+3. Compile the structural translation units into native binary targets:
+```bash
+cmake --build .
+
+```
+
+
+4. Fire up the resulting interactive desktop application artifact:
+```bash
+./CVEdgeShapeDetectorApp
+
+```
+```
+
+```
